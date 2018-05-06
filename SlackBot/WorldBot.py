@@ -60,16 +60,12 @@ class WorldBot:
             message_json = await self.websocket.recv()
             message_json = json.loads(message_json)
             if self.is_callme(message_json):  # Write something if users call you(Bot)
-                print('Hey, Somebody calls you.')
-                print(message_json)
 
                 # 임시 방편. 봇을 언급한 메시지가 날아오면 해당 json 내의 channel과 user로 데이터를 업데이트 해놓음.
                 # slack으로 데이터를 보내는데에 사용됨.
                 self.target_channel = message_json.get('channel')
                 self.target_user = message_json.get('user')
 
-                print(self.target_channel)
-                print(self.target_user)
                 # ...
 
                 # Is a command? if yes...
