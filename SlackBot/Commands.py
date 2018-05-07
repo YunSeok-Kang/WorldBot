@@ -7,7 +7,7 @@ worldBot = None
 #   idx [0]: command type
 #   idx [1]: details of command
 def find_command(msg_command):
-    if msg_command[0] == '/WAI':
+    if msg_command[0] == 'WAI':
         cmd_callwai()
 
 
