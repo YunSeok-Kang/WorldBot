@@ -88,19 +88,9 @@ class WorldBot:
                 if parsed_command:
                     cmds.find_command(parsed_command)
 
-
-    # @asyncio.coroutine
     def msg_to_slack(self, text, attachments=None):
-        #yield from self.websocket.send(json.dumps({'source_team': 'T9JJGHKQX', 'user': 'U9JJGHKV5', 'text': 'Hello', 'channel': 'CAJ5CTY11', 'type': 'message', 'ts': '1525597125.000032', 'team': 'T9JJGHKQX'}))
-        #yield from self.websocket.send(json.dumps({"id": 1, "type": "message", "channel": self.target_channel,
-                                                   #"text": text}))
         self.slack.chat.post_message(channel='#general', text='', attachments=attachments, username='worldbot_test')
         #self.slack.chat.post_message(channel='#development_test', text='test', username='worldbot_test')
-        # if attachments:
-        #    self.slack.chat.post_message(channel=channel, text=text, attachments=attachments, username=username)
-        # else:
-        #    self.slack.chat.post_message(channel=channel, text=text, username=username)
-
 
 if __name__ == "__main__":
     worldBot = WorldBot();
