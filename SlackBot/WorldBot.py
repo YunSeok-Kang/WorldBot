@@ -37,7 +37,10 @@ class WorldBot:
     # parameters
     # message_json: message from slack. it must be a json type.
     def is_callme(self, message_json):
-        return (message_json.get('type') == 'message') and (
+        # message_json.get('subtype') is None => 이슈 ID: 0000025
+        #   edit, delete 등의 이벤트는 'subtype'으로 이벤트 정보가 넘어온다. None의 의미는 subtype이 아니란 말. 즉, 새로 전송된 메시지.
+
+        return (message_json.get('type') == 'message') and (message_json.get('subtype') is None) and(
             message_json.get('text').startswith('<@{}>'.format(self.bot_id)))
 
     # def msg_recv(self, text):
