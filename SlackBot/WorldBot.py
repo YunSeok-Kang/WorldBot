@@ -42,10 +42,9 @@ class WorldBot:
             # message_json.get('subtype') is None => 이슈 ID: 0000021
             #   edit, delete 등의 이벤트는 'subtype'으로 이벤트 정보가 넘어온다. None의 의미는 subtype이 아니란 말. 즉, 새로 전송된 메시지.
             if message_json.get('subtype') is None:
-                # WB, wb 등으로 WorldBot을 언급. 현재는 임시로 WB, wb 두 개만 인식하게 만들었음.
-                # 문자를 모두 소문자로 바꿔 인식하도록 수정하자. 그럼 wb 하나만 비교해도 됨.
-                text_message = message_json.get('text')
-                if text_message.startswith('WB') or (text_message.startswith('wb')):
+                # 명령어는 소문자로 변경하여 인식. 코딩의 편리성을 위해서.
+                text_message = message_json.get('text').lower()
+                if text_message.startswith('wb'):
                     return True
 
                 else:
@@ -85,7 +84,7 @@ class WorldBot:
                 # ...
 
                 # Is a command? if yes...
-                parsed_command = self.command_parse(message_json.get('text'))
+                parsed_command = self.command_parse(message_json.get('text').lower())
                 if parsed_command:
                     cmds.find_command(parsed_command)
 
