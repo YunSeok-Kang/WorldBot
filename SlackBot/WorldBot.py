@@ -37,11 +37,23 @@ class WorldBot:
     # parameters
     # message_json: message from slack. it must be a json type.
     def is_callme(self, message_json):
-        # message_json.get('subtype') is None => 이슈 ID: 0000021
-        #   edit, delete 등의 이벤트는 'subtype'으로 이벤트 정보가 넘어온다. None의 의미는 subtype이 아니란 말. 즉, 새로 전송된 메시지.
 
-        return (message_json.get('type') == 'message') and (message_json.get('subtype') is None) and(
-            message_json.get('text').startswith('<@{}>'.format(self.bot_id)))
+        if message_json.get('type') == 'message':
+            # message_json.get('subtype') is None => 이슈 ID: 0000021
+            #   edit, delete 등의 이벤트는 'subtype'으로 이벤트 정보가 넘어온다. None의 의미는 subtype이 아니란 말. 즉, 새로 전송된 메시지.
+            if message_json.get('subtype') is None:
+                # WB, wb 등으로 WorldBot을 언급. 현재는 임시로 WB, wb 두 개만 인식하게 만들었음.
+                # 문자를 모두 소문자로 바꿔 인식하도록 수정하자. 그럼 wb 하나만 비교해도 됨.
+                text_message = message_json.get('text')
+                if text_message.startswith('WB') or (text_message.startswith('wb')):
+                    return True
+
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 
     # def msg_recv(self, text):
     #   print(text)
@@ -54,6 +66,7 @@ class WorldBot:
 
         # 전처리 해주고(에러 잡기)
         # ex) 문자열이 '/WAI' 가 아니라, "/WAI"라고 들어오는 걸 하나로 통일하기 등.
+        # 명령어를 모두 소문자로 바꾸는 기능도 넣자. 소문자만 비교해도 되도록.
         # 그 후에...
         return msg_arr[1:]
 
