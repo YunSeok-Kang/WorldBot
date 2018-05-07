@@ -37,7 +37,7 @@ class WorldBot:
     # parameters
     # message_json: message from slack. it must be a json type.
     def is_callme(self, message_json):
-
+        
         if message_json.get('type') == 'message':
             # message_json.get('subtype') is None => 이슈 ID: 0000021
             #   edit, delete 등의 이벤트는 'subtype'으로 이벤트 정보가 넘어온다. None의 의미는 subtype이 아니란 말. 즉, 새로 전송된 메시지.
@@ -65,7 +65,6 @@ class WorldBot:
 
         # 전처리 해주고(에러 잡기)
         # ex) 문자열이 '/WAI' 가 아니라, "/WAI"라고 들어오는 걸 하나로 통일하기 등.
-        # 명령어를 모두 소문자로 바꾸는 기능도 넣자. 소문자만 비교해도 되도록.
         # 그 후에...
         return msg_arr[1:]
 

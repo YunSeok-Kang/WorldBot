@@ -1,27 +1,23 @@
-import WAITalker
+from Services import WAI
 
-worldBot = None
+services = []
 
 # parameters
 # msg_command: array of string.
-#   idx [0]: command type
-#   idx [1]: details of command
+#   idx [0]: service name
+#   idx [1]: command
 def find_command(msg_command):
-    if msg_command[0] == 'wai':
-        cmd_callwai()
+    select_service(msg_command[0])
+    if msg_command[1] == 'wai':
+        print('')
 
 
-def cmd_callwai():
+def select_service(service_text):
+    print('')
 
-    attachments_dict = dict()
+def test():
+    print('test func')
 
-    msg = ''
-    for wai_data in WAITalker.recv_wai_datas():
-        msg += wai_data['name'] + '\n http://' + wai_data['ip'] + ':' + wai_data['port'] + '\n'
-
-    attachments_dict['title'] = 'World Applications Info';
-    attachments_dict['text'] = msg;
-
-    worldBot.msg_to_slack(text= ' ', attachments=[attachments_dict])
-
-    #worldBot.msg_to_slack('#development_test', 'WorldBot', 'Test')
+services.append(WAI())
+services[0].add_event('test', test())
+services[0].run_event('test')
