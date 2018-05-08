@@ -14,6 +14,7 @@ class WorldBot:
         self.slack = Slacker(self.m_token)
 
         cmds.worldBot = self
+        cmds.init()
 
         # members of SlackTalker
         self.websocket = None
