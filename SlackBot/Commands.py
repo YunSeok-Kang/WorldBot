@@ -20,7 +20,7 @@ def init():
 def find_command(msg_command):
     target = select_service(msg_command[0])
     if target:
-        target.run_event(msg_command[1])
+        target.run_event(msg_command[1], 'obj')
 
 
 def select_service(service_text):
@@ -28,4 +28,3 @@ def select_service(service_text):
         return services[0]
     else:
         print('존재하지 않는 서비스입니다.')
-        return None
