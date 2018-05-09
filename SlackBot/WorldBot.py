@@ -60,7 +60,7 @@ class WorldBot:
 
     # json text를 가공하여 명령어 부분만 넘긴다.
     def command_parse(self, message):
-        msg_arr = message.split(' ', 2)
+        msg_arr = message.split(' ')
         if len(msg_arr) <= 1:
             return False
 
