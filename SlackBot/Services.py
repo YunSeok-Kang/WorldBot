@@ -24,16 +24,21 @@ class Service:
             else:
                 action()
 
+    def send_msg_to_bot(self, text, attachments=None):
+        if Service.target_world_bot:
+            Service.target_world_bot.msg_to_slack(text=' ', attachments=attachments)
+        else:
+            print('Services.py: Service.target_world_bot에 데이터가 존재하지 않습니다.')
+
+
 class WAI(Service):
 
     def __init__(self):
         Service.__init__(self)
         self.service_name = 'wai'
 
-    def info(self, obj):
-        if obj:
-            print('here is a obj')
-
+    # Todo: domain이 null이 아니면 domain을 보여주고, domain이 null이면 ip를 보여주도록 수정하자.
+    def info(self):
         attachments_dict = dict()
 
         msg = ''
@@ -43,7 +48,21 @@ class WAI(Service):
         attachments_dict['title'] = 'World Applications Info'
         attachments_dict['text'] = msg
 
-        if Service.target_world_bot:
-            Service.target_world_bot.msg_to_slack(text=' ', attachments=[attachments_dict])
+        self.send_msg_to_bot(' ', [attachments_dict])
+
+
+    def add_service(self, param):
+        attachments_dict = dict()
+
+        if (param == '' or param == None):
+            attachments_dict['title'] = '서비스 등록 오류.'
+            attachments_dict['text'] = '명령어 형식을 확인하세요. \n 형식: wb wai add 서비스명'
         else:
-            print('Services.py: Service.target_world_bot에 데이터가 존재하지 않습니다.')
+            attachments_dict['title'] = param + ' 서비스 등록을 시작합니다.'
+            attachments_dict['text'] = '아직 완성되지 않았습니다. slack에서 명령어로 등록을 완료할지, 등록 페이지 url을 넘길지 고민 중입니다.'
+
+        # WAITalker.add_wai_service 실행시켜야 함.
+
+        self.send_msg_to_bot(' ', [attachments_dict])
+
+        print(param)
