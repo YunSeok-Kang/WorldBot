@@ -18,7 +18,7 @@ def add_wai_service(name, hosting_server, port, domain=None):
     # 사용 중인 포트인지도 확인 필요.
     # name이 이미 존재하는 것인지도 확인 필요.
 
-    r = requests.get('http://13.124.168.174:9994/Wai_interface.php', args)
+    r = requests.get('http://localhost:9994/Wai_interface.php', args)
 
     return json.loads(r.text)
 
