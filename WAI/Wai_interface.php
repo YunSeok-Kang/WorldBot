@@ -15,7 +15,22 @@ class WorldApplicaionInfo
 	function __construct() 
 	{
 		// 현재는 하드코딩 되어있지만, 이후에는 DB 정보 등은 파일로 만들어서 파싱해오는 형식으로 하자. 그래야 보안 문제가 해결됨.
-		$this->dataBase = new Database('ip 입력', '유저 이름', '비밀번호', '테이블');
+		$this->dataBase = new Database('127.0.0.1', 'user01', '#09a28sh0', 'world_applications_info');
+	}	
+	
+	private function HasServiceName($name)
+	{
+		return $this->dataBase->query("SELECT * FROM address_table WHERE name='$name'");
+	}
+	
+	private function HasServicePort($port)
+	{
+		return $this->dataBase->query("SELECT * FROM hosting_info_table WHERE port='$port'");
+	}
+	
+	private function HasHostingServer($hosting_server_name)
+	{
+		return $this->dataBase->query("SELECT * FROM address_table WHERE name='$hosting_server_name'");
 	}
 	
 	// return type: Json Array
@@ -33,13 +48,64 @@ class WorldApplicaionInfo
 		}
 		return json_encode($sendingArr);
 	}
+	
+	function AddService($name, $domain, $hosting_server, $port)
+	{
+		$result_msg = '';
+		$noError = TRUE;
+		if ($this->HasServiceName($name))
+		{
+			$result_msg = "db에 해당 이름의 필드가 이미 존재합니다. name:".$name."<br>";
+			$noError = FALSE;
+		}
+		
+		if ($this->HasServicePort($port))
+		{
+			$result_msg = $result_msg."db에 해당 이름의 필드가 이미 존재합니다. port:".$port."<br>";
+			$noError = FALSE;
+		}
+		
+		if ($this->HasHostingServer($hosting_server))
+		{
+			$result_msg = $result_msg."존재하지 않는 호스팅 서버입니다. hosting_server:".$hosting_server."<br>";
+			$noError = FALSE;
+		}
+		
+		if ($noError)
+		{
+			$query_str1 = "INSERT INTO address_table(name, ";
+			$query_str2 = "hosting_server, port) VALUES('$name', ";
+			if ($domain != NULL)
+			{
+				$query_str1 = $query_str1."domain, ";
+				$query_str2 = query_str2."'$domain', ";
+			}
+			
+			$this->dataBase->query($query_str1.$query_str2."'$hosting_server', '$port')");
+		}
+		
+		return false;
+	}
 }
 
 ?>
 
 <?php
-// To do when page loaded
 
 $wai = new WorldApplicaionInfo();
-echo $wai->GetServicesInfo();
+
+// To do when page loaded
+$command = $_GET['command'];
+switch ($command) 
+{
+	case 'info':
+		echo $wai->GetServicesInfo();
+		break;
+	case 'add':
+		AddService($_GET['name'], $_GET['domain'], $_GET['hosting_server'], $_GET['port']);
+		break;
+}
+
+
+
 ?>
